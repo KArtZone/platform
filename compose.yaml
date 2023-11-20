@@ -1,0 +1,25 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3.10.7-management
+    ports:
+      - 15672:15672
+      - 5672:5672
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: "core"
+      POSTGRES_USER: "core"
+      POSTGRES_PASSWORD: "core"
+    ports:
+      - 5432:5432
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass artpass
+    volumes:
+      - cache:/data
+volumes:
+  cache:
+    driver: local
